@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -8,8 +8,13 @@ import Animated, {
   Easing,
   withDelay,
 } from 'react-native-reanimated';
+import useI18n from '../../hooks/useI18n';
+import { useNavigation } from '@react-navigation/native';
+
 
 const HomeScreen = () => {
+  const { t, isReady } = useI18n();
+  const navigation = useNavigation<any>();
   const welcomeOpacity = useSharedValue(0);
   const welcomeTranslateY = useSharedValue(20);
 
@@ -55,19 +60,23 @@ const HomeScreen = () => {
     transform: [{ translateY: buttonTranslateY.value }],
   }));
 
+    if (!isReady) {
+        return <ActivityIndicator size="large" color="#0000ff" />;
+    }
+
   return (
     <View style={styles.container}>
       <Animated.Text style={[styles.title, welcomeStyle]}>
-        Welcome to Home
+       {t('welcome')}
       </Animated.Text>
 
       <Animated.Text style={[styles.subtitle, subtitleStyle]}>
-        Let's get started
+        {t('subtitle')}
       </Animated.Text>
 
       <Animated.View style={[styles.buttonContainer, buttonStyle]}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Continue</Text>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('MainStack',{ screen: 'SettingScreen'})}>
+          <Text style={styles.buttonText}>{t('continue')}</Text>
         </TouchableOpacity>
       </Animated.View>
     </View>

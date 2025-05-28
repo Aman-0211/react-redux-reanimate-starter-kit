@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 export const STORAGE_KEYS = {
   AUTH_TOKEN: 'AUTH_TOKEN',
@@ -96,7 +97,7 @@ export const storage = {
     }
   },
 
-//   Get Access Token
+  //   Get Access Token
   getAccessToken: async (): Promise<string | null> => {
     try {
       return await AsyncStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
@@ -106,12 +107,44 @@ export const storage = {
     }
   },
 
-//   Set Access Token
+  //   Set Access Token
   setAccessToken: async (token: string) => {
     try {
       await AsyncStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, token);
     } catch (e) {
       console.error('setAccessToken error:', e);
     }
-  }
+  },
+
+  setLanguage: async (lang: string) => {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEYS.LANGUAGE, lang);
+    } catch (e) {
+      console.error('setAccessToken error:', e);
+    }
+  },
+  getLanguage: async (): Promise<string | null> => {
+    try {
+      return await AsyncStorage.getItem(STORAGE_KEYS.LANGUAGE);
+    } catch (e) {
+      console.error('getLanguage error:', e);
+      return null;
+    }
+  },
+  setIsAuthenticated: async (isAuthenticated: boolean) => {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEYS.IS_ONBOARDED, JSON.stringify(isAuthenticated));
+    } catch (e) {
+      console.error('setIsAuthenticated error:', e);
+    }
+  },
+  getIsAuthenticated: async (): Promise<boolean> => {
+    try {
+      const value = await AsyncStorage.getItem(STORAGE_KEYS.IS_ONBOARDED);
+      return value ? JSON.parse(value) : false;
+    } catch (e) {
+      console.error('getIsAuthenticated error:', e);
+      return false;
+    }
+  },
 };

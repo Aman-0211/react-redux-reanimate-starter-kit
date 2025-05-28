@@ -4,6 +4,7 @@ import {Provider} from 'react-redux';
 import store from './redux/store';
 import {AuthProvider} from './context/AuthContext';
 import RootNavigator from './navigation/RootNavigator';
+import "./I18n"
 
 const Main = () => {
   return (

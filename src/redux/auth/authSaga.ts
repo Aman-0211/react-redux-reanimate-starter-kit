@@ -9,6 +9,7 @@
     const saveAuthDataToStorage = async (data: AuthResponse) => {
     try {
         await storage.setAccessToken(data.accessToken);
+        await storage.setIsAuthenticated(true);
     } catch (e) {
         console.error('Failed to save auth data:', e);
         throw e;
@@ -18,7 +19,7 @@
     function* handleLogin(action: ReturnType<typeof loginRequest>) {
       try {
         const res: AuthResponse = yield call(login, action.payload);
-            yield call(saveAuthDataToStorage, res);
+        yield call(saveAuthDataToStorage, res);
         yield put(loginSuccess(res));
       } catch (error: any) {
         yield put(loginFailure(error.message));

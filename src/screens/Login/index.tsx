@@ -1,20 +1,25 @@
 
-    import React, { useContext, useState } from 'react';
+    import React, { useState } from 'react';
     import { View, TextInput, ActivityIndicator, Text, StyleSheet, TouchableOpacity } from 'react-native';
     import { useDispatch, useSelector } from 'react-redux';
     import { loginRequest } from '../../redux/auth/authSlice';
     import { RootState, AppDispatch } from '../../redux/store';
-    import { AuthContext } from '../../context/AuthContext';
-    
+    import { useNavigation } from '@react-navigation/native';
+    import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+    import { RootStackParamList } from '../../routers/rootRouter';
+
+
     const LoginScreen: React.FC = () => {
       const [username, setUsername] = useState<string>('');
       const [password, setPassword] = useState<string>('');
       const dispatch = useDispatch<AppDispatch>();
-      const {login} = useContext(AuthContext);
+      const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  
       const { loading, error } = useSelector((state: RootState) => state.auth);
     
       const handleLogin = () => {
         dispatch(loginRequest({ username, password }));
+        navigation.navigate('MainStack', {screen: 'HomeScreen'});
       };
     
       return (
